@@ -137,12 +137,29 @@
 }
 
 @media (max-width: 750px) {
-  .first{
-    min-width: 0px;
-    width: 0px;
-    display: none;
-  }
+  
   .second{
     width: 100%;
   }
 } 
+
+.hidesidebar{
+  /* position: relative;
+    min-width: 0px;
+    max-width: 0px;
+    left: -500px; */
+    min-width: 0px;
+    width: 0px;
+    display: none;
+    -webkit-transition: width 1s ease-in-out;
+    -moz-transition: width 1s ease-in-out;
+    -o-transition: width 1s ease-in-out;
+    transition: width 1s ease-in-out;
+
+}
+
+.hidesidebar2{
+  width: 100%;
+}
+
+

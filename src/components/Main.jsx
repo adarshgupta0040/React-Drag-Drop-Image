@@ -1,7 +1,7 @@
 import React from 'react'
 import { Heading, List, Stack, Input, Button } from "@chakra-ui/react";
 import Player from "./Player";
-import { useState } from "react";
+import { useState,useEffect  } from "react";
 import { useDrop } from "react-dnd";
 
 export default function Main() {
@@ -21,6 +21,8 @@ export default function Main() {
     });
 
     const [isurl, setIsurl] = useState("");
+
+    const [showsidebar, setshowsidebar] = useState(true);
 
     const [{ isOver }, addToTeamRef] = useDrop({
         accept: "player",
@@ -91,17 +93,39 @@ export default function Main() {
         console.log(ismobileview);
     }
 
+    const handleSidebar = (e) => {
+        setshowsidebar(!showsidebar)
+    }
+
     const [ismobileview, setmobileview] = useState(false);
+
+    useEffect(() => {
+        const handleResize = () => {
+            if(window.innerWidth<=750 ) {setshowsidebar(false);}
+            else{
+                setshowsidebar(true);
+            }
+            
+        };
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
 
     return (
         <div style={{ minHeight: "100vh" }}>
+            
             <div className='main'>
-                <div className='first'>
+            
+                <div className={showsidebar ? 'first' : 'first  hidesidebar'} >
+                    
                     <div className='first-1' style={{ height: "100%" }}>
                         <Stack width="100%" style={{ height: "100%" }} >
 
                             <Heading fontSize="3xl" color="yellow.800" textAlign="center">
                                 <Button colorScheme='teal' size='sm' onClick={(e) => { Onclickresponse(e) }} style={{ float: "left" }}>{ismobileview ? 'Desktop' : 'Mobile'}</Button>
+                                
                                 Drag
                             </Heading>
                             <List
@@ -128,7 +152,7 @@ export default function Main() {
                                         index={i}
                                     />
                                 ))}
-
+                                
                                 <div className='first-2'>
                                     <Stack justify="space-between">
                                         <Heading fontSize="3xl" color="gray.800" textAlign="center">
@@ -171,7 +195,9 @@ export default function Main() {
                                             <label htmlFor="width">Url: </label>
                                             <Input type="url" value={isurl} onChange={handleUrlChange} placeholder="URL" />
                                         </div>
+                                        
                                     </Stack>
+                                    <Button colorScheme='teal' size='sm' onClick={(e) => { }} style={{ }}>Preview</Button>
                                 </div>
                             </List>
                         </Stack>
@@ -180,10 +206,11 @@ export default function Main() {
                 </div>
 
 
-                <div className={ismobileview ? 'second second-mobile' : 'second'} style={{}}>
+                <div className={ismobileview ? 'second second-mobile' : showsidebar? "second":"second hidesidebar2"} style={{}}>
                     <Stack className={ismobileview ? 'second-mobile-child' : ''} width="100%" style={{ height: "100%" }}>
                         <Heading fontSize="3xl" color="teal.800" textAlign="center">
                             Drop
+                            <Button colorScheme='teal' size='sm' onClick={(e) => { handleSidebar(e) }} style={{ float: "right" }}>{showsidebar ? 'Hide' : 'Show'}</Button>
                         </Heading>
                         <List
                             bgGradient={
